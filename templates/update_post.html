@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Post</title> 
+</head>
+<body>
+    <h1>Update Post</h1>
+    <form id="updateForm">
+        <label for="postId">Post ID:</label><br>
+        <input type="number" id="postId" name="postId" required><br>
+        <label for="title">New Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+        <label for="content">New Content:</label><br>
+        <textarea id="content" name="content"></textarea><br>
+        <label for="published">Published:</label><br>
+        <input type="checkbox" id="published" name="published" value="true"><br>
+        <input type="submit" value="Update">
+    </form>
+    <div id="message"></div>
+
+    <script>
+        async function updatePost() {
+            const postId = document.getElementById("postId").value;
+            const title = document.getElementById("title").value;
+            const content = document.getElementById("content").value;
+            const published = document.getElementById("published").checked;
+
+            const data = {
+                title: title,
+                content: content,
+                published: published
+            };
+
+            const response = await fetch(`/posts/${postId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                document.getElementById("message").innerText = "Post updated successfully.";
+            } else {
+                document.getElementById("message").innerText = "Failed to update post.";
+            }
+        }
+
+        document.getElementById("updateForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            await updatePost();
+        });
+    </script>
+</body>
+</html>

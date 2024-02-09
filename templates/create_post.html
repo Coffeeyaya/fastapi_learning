@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Test</title>
+</head>
+<body>
+  <form id="uploadform">
+    <label for="title">Title:</label><br>
+    <input type="text" id="title" name="title"><br>
+    <label for="content">Content:</label><br>
+    <textarea id="content" name="content"></textarea><br>
+    <label for="published">Published:</label><br>
+    <input type="checkbox" id="published" name="published" value="true"><br>
+    <input type="button" id="submit" value="Submit" onclick="submitFormData()">
+  </form>
+  <textarea id="box">Here should be data returned from FastAPI response</textarea>
+  <script>
+    async function submitFormData() {
+      const title = document.getElementById("title").value;
+      const content = document.getElementById("content").value;
+      const published = document.getElementById("published").checked;
+
+      const data = {
+        title: title,
+        content: content,
+        published: published
+      };
+
+      const response = await fetch("/create_post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        document.getElementById("box").value = JSON.stringify(result);
+      } else {
+        document.getElementById("box").value = `Response error: ${response.status}`;
+      }
+    }
+  </script>
+</body>
+</html>

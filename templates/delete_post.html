@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Post</title> 
+</head>
+<body>
+    <h1>Delete Post</h1>
+    <form id="deleteForm">
+        <label for="postId">Post ID:</label><br>
+        <input type="number" id="postId" name="postId" required><br>
+        <input type="submit" value="Delete">
+    </form>
+    <div id="message"></div>
+
+    <script>
+        async function deletePost() {
+            const postId = document.getElementById("postId").value;
+
+            const response = await fetch(`/posts/${postId}`, {
+                method: "DELETE"
+            });
+
+            if (response.ok) {
+                document.getElementById("message").innerText = "Post deleted successfully.";
+            } else {
+                document.getElementById("message").innerText = "Failed to delete post.";
+            }
+        }
+
+        document.getElementById("deleteForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            await deletePost();
+        });
+    </script>
+</body>
+</html>
